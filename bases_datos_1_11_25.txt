@@ -1,0 +1,105 @@
+1. Funciones de agregacion: Con agregacion obtenemos resumenes por medio de calculos
+- sum() calcula la suma de los valores en una columna
+- avg() calcula el promedio de los valores en una columna
+- min() devuelve el valor min de una columna
+- max() devuelve el valor min de una columna
+- count() cuenta el numero de filas o valores distintos en una columna
+group by va siempre despues del where, en group by ponemos todo lo que este desde select hasta antes de la funcion de agregacion
+
+Ej_1 calcular la cantidad de estudiantes por materia:
+select asi.name, count(id_estudiante)
+from estudiante as e
+inner join inscripcion_asignatura as a
+on e.id_estudiante=a.id_estudiante
+inner join asignatura as asi
+on a.id_asignatura=as.id_asignatura
+group by asi.name
+--distinct nos sirve para calcular los valores distintos en caso de que se repitan, se escribe antes del valor que queremos calcular
+
+Ej_2 calcular el maximo precio:
+select max(listPrice)
+from production.product
+--ya no ponemos group by porque no hay nada antes de la funcion de agregacion
+
+Ej_3 calcular el minimo precio:
+select min(listPrice)
+from production.product
+where listPrice>0
+
+Ej_4 calcular el minimo precio y subcategoria:
+select psc.name, min(p.ListPrice)
+from production.product as p
+inner join Production.productSubCategory as psc
+on p.ProductSubcategoryID=psc.ProductSubcategoryID
+where p.ListPrice>0
+group by psc.name
+
+Ej_5 mostrar categoria, precio maximo por categoria, el promedio por categoria y la cantidad de productos por categoria
+select pc.name, max(p.ListPrice) as precioMax, avg(p.ListPrice) as promedio, count(*) as cantProduct
+from production.product as p
+inner join Production.productSubCategory as psc
+on p.ProductSubcategoryID=psc.ProductSubcategoryID
+inner join Production.ProductCategory as pc
+on psc.ProductCategoryID=pc.ProductCategoryID
+where p.ListPrice>0
+group by pc.name
+
+2. Funciones de cadena:
+len() devuelve la longitud de la cadena mas el espacio, solo sirve para strings
+left().right() extraen un numero especifico de caracteres desde el lado izquierdo o derecho de una cadena, respectivamente
+concat() concatena dos o mas cadenas
+lower().upper() convierten una cadena a minisculas o mayusculas, respectivamente
+Ej_1 cuando sea mujer muestre la inicial de su nombre y si es hombre la inicial de su apellido:
+select 
+case
+when p.Title = 'Ms.' then left(p.FirstName,1)
+when p.Title='Mr.' then left(p.LastName,1)
+end
+from Person.Person as p
+where p.Title is not null
+
+Ej_2 cuando sea mujer muestre la inicial de su nombre y si es hombre la inicial de su apellido y muestre su nombre completo:
+select 
+case
+when p.Title = 'Ms.' then left(p.FirstName,1) 
+when p.Title='Mr.' then left(p.LastName,1) 
+end iniciales,
+p.FirstName, p.LastName, CONCAT(p.FirstName,' ',p.LastName) as nombrecompleto
+from Person.Person as p
+where p.Title is not null
+
+Ej_3 hacer un correo con la inicial del nombre y concat:
+select concat(left(p.FirstName,1),'.','@ucb.edu.bo')
+from Person.Person as p
+
+Ej_4 usando lower y concat:
+select lower(concat(left(p.FirstName,1),'.','@ucb.edu.bo'))
+from Person.Person as p
+
+3. funciones de fecha y hora:
+getdate() devuelve la fecha y hora actuales
+datediff() calcula la diferencia entre dos fechas o horas
+datepart() devuelve una parte especifica de una fecha y hora
+eomonth() devuelve el ultimo dia de la fecha que se le da
+Ej_1 datediff (podemos cambiar el year por month, seconds:
+select DATEDIFF(year, '2007-05-13', '2025-11-01')
+
+Ej_2 getdate:
+select(GETDATE())
+
+4. funciones de conversion de datos:
+cast().convert() convierte un tipo de dato a otro (convert ayuda para fechas, podemos darle el tipo de formato de fecha)
+parse() convierte una cadena a un tipo de dato especifico
+substring() extrae una parte especifica de una cadena
+stuff() insertar y reemplazar partes de una cadena de texto
+patindex() busca la posicion de la primera aparicion de un patron especifico dentro de una cadena de texto
+Ej_1 cast:
+select cast('2025' as int)
+
+Ej_2 convert:
+select convert(nvarchar, getdate(), 111)
+
+Ej_3 substring:
+select substring(nombre_cadena, desde_donde_empieza_cortar, cuantos_caracteres_va_avanzar)
+--si tenemos la cadena ISW-SIS112/I-2025 y solo queremos SIS112
+select substring('ISW-SIS112/I-2025', 5, 6)
