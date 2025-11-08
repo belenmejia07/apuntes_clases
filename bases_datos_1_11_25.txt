@@ -103,3 +103,12 @@ Ej_3 substring:
 select substring(nombre_cadena, desde_donde_empieza_cortar, cuantos_caracteres_va_avanzar)
 --si tenemos la cadena ISW-SIS112/I-2025 y solo queremos SIS112
 select substring('ISW-SIS112/I-2025', 5, 6)
+
+Ej_4 substring:
+sacar solo el nombre del usuario del email
+select substring(email, 1, patindex('%@%')-1)
+
+Ej_5 substring:
+sacar el resto del email
+substring(email, patindex('%@%')+1, len(email))
+

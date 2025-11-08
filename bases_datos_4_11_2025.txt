@@ -1,11 +1,11 @@
-funciones escalares
+funciones escalares.- Devuelve un solo valor basado en los argumentos que se le pasa
 crear una funcion
 --crea una funcion para calcular el total de ventas para un cliente en especifico
 --para modificar la funcion en vez de create ponemos alter
 create function sales.calcularTotalVentasPorCliente(@customerID int) --los parametros van con arroba 
-returns decimal(18,2) --parametros de decimal, hasta 18 digitos y dos decimales, Tambien podemos poner float
+returns decimal(18,2) --parametros de decimal, hasta 18 digitos y dos decimales, Tambien podemos poner float, es lo que esperamos de la funcion
 as 
-begin
+begin --dentro de begin esta la logica de la funcion
 declare @totalVentas decimal(18,2) --declaramos una variable
 set @totalVentas=(select sum(soh.totalDue)
 from sales.salesOrderHeader soh
@@ -14,9 +14,9 @@ where c.customerID=@customerID)
 return @totalVentas;
 end;
 
-en otro query llamamos a la function
-select top 10*,
-dbo.calcularTotalVentasPorClienteYAnio(customerID)
+en otro query llamamos a la funcion
+select customerID,
+sales.calcularTotalVentasPorCliente(customerID)
 from sales.customer
---where customerID=30117
-order by 1 desc
+--where customerID=23456
+--si no le ponemos el dbo antes del nombre de a function el sistema automaticamente le asignara el dbo, los esquemas sirven para organizar las tablas
