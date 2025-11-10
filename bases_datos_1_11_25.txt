@@ -112,3 +112,90 @@ Ej_5 substring:
 sacar el resto del email
 substring(email, patindex('%@%')+1, len(email))
 
+5. operadores logicos
+- all: compara un valor con todos los valores de una lista o subconsulta, devolvera el valor que cumpla con todas las condiciones
+- and: compara una o mas condiciones donde todas esas condiciones deben ser verdaderas
+- any/some: compara un valor y si ese valor se cumple con al menos una condicion que se le propone se muestra ese valor
+- between: filtra los valores que estan dentro de un rango
+- exists/not exists: comprueba si el valor que tenemos esta o existe dentro de otra tabla, si es asi devuelve true, caso contrario devuelve false, se tienen que conectar las tablas de donde estamos sacando los valores, si no lo comparamos no sabremos que verificar si existe y en donde existe, el not exists hace lo contrario, trabajamos con subconsultas y con tablas, compara filas y no puede trabajar con listas
+- in/not in: compara valores con listas, viceversa con not in, puede trabajar con tablas cuando la tabla devuelve un valores y no filas, verifica si un valor está dentro de una lista o de los resultados de una subconsulta
+- like: compara textos o caracteres con lo que le pasemos
+- not: niega una condicion
+- or: combina condiciones donde basta que una sea verdadera
+ej_1 all:
+SELECT * 
+FROM Producto
+WHERE Precio > ALL (SELECT Precio FROM Producto WHERE Nombre IN ('A', 'B'));
+
+Ej_2 and:
+SELECT * 
+FROM Production.Product
+WHERE Color = 'Red' AND ListPrice > 100;
+
+Ej_3 any/some:
+SELECT * 
+FROM Producto
+WHERE Precio > ANY (SELECT Precio FROM Producto WHERE Nombre IN ('A', 'B'));
+
+Ej_4 between:
+SELECT * 
+FROM Production.Product
+WHERE ListPrice BETWEEN 50 AND 200;
+
+Ej_5 exists/not exists:
+SELECT Name 
+FROM Production.ProductSubcategory AS s
+WHERE EXISTS (
+    SELECT * 
+    FROM Production.Product AS p
+    WHERE p.ProductSubcategoryID = s.ProductSubcategoryID
+);
+
+Ej_6 in/not in:
+SELECT * 
+FROM Production.Product
+WHERE Color IN ('Red', 'Black', 'White');
+
+Ej_7 in/not in:
+SELECT Name
+FROM Production.Product
+WHERE ProductSubcategoryID IN (
+    SELECT ProductSubcategoryID
+    FROM Production.ProductSubcategory
+);
+
+Ej_8 like (empieza con un texto):
+SELECT Name
+FROM Production.Product
+WHERE Name LIKE 'Mountain%';
+
+Ej_9 like (termina con un texto):
+SELECT Name
+FROM Production.Product
+WHERE Name LIKE '%Bike';
+
+Ej_10 like (contiene con un texto):
+SELECT Name
+FROM Production.Product
+WHERE Name LIKE '%Frame%';
+
+Ej_11 like (con un solo caracter desconocido):
+SELECT Name
+FROM Production.Product
+WHERE Name LIKE 'A_';
+
+Ej_12 like (negacion con not like):
+SELECT Name
+FROM Production.Product
+WHERE Name NOT LIKE '%Bike%';
+
+Ej_13 not:
+SELECT * 
+FROM Production.Product
+WHERE NOT Color = 'Red';
+
+Ej_14 or:
+SELECT * 
+FROM Production.Product
+WHERE Color = 'Red' OR Color = 'Black';
+
