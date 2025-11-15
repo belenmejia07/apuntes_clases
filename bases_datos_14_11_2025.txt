@@ -1,4 +1,4 @@
-procedimiento almacenado.- sirve para reutilizar codigo, es un  procedimiento almacenado, un procedimiento general que puede servir para cualquier uso en base a los parametros de entrada, para alterar un procedimiento despues de correr con create se usa alter
+procedimiento almacenado.- sirve para reutilizar codigo, es un  procedimiento almacenado, un procedimiento general que puede servir para cualquier uso en base a los parametros de entrada, para alterar un procedimiento despues de correr con create se usa alter, es un procedimiento precompilado, osea que se ejecuta primero para validar que no haya errores y cuando se lo usa ya no verifica otra vez que el procedimiento este bien directamente lo ejecuta, se debe documentar el codigo
 sintaxis basica:
 create procedure obtenerVentas
 as
