@@ -1,0 +1,10 @@
+procedimiento almacenado.- sirve para reutilizar codigo, es un  procedimiento almacenado, un procedimiento general que puede servir para cualquier uso en base a los parametros de entrada, para alterar un procedimiento despues de correr con create se usa alter
+sintaxis basica:
+create procedure obtenerVentas
+as
+begin
+select salesOrderId, orddereDate, totalDue
+from sales.salesOrderHeader
+end
+para llamarlo:
+exec dbo.obtenerVentas
